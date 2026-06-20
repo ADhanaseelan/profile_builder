@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    @apply bg-[#0a0a0a] text-white overflow-x-hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(234, 88, 12, 0.35);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  
+  .glass-hover {
+    @apply hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-500;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#7C3AED] via-[#06B6D4] to-[#9333EA];
+  }
+
+  .text-gradient-subtle {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60;
+  }
+}
+
+/* ─── Scroll Progress Bar ─── */
+@keyframes grow-width {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #ea580c, #f97316, #fbbf24);
+  z-index: 9999;
+  transform: scaleX(0);
+  transition: transform 0.1s linear;
+}
+
+/* ─── Section slide-in glow on entrance ─── */
+@keyframes section-glow-in {
+  0%   { opacity: 0; filter: blur(8px); }
+  100% { opacity: 1; filter: blur(0px); }
+}
+
+.section-reveal {
+  animation: section-glow-in 0.9s ease forwards;
+}
+
+/* ─── Infinite marquee ─── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+/* ─── Pulse glow ─── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(234, 88, 12, 0.4); }
+  50%       { box-shadow: 0 0 24px rgba(234, 88, 12, 0.8); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ─── Custom scrollbar ─── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ea580c 0%, #7c3aed 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+}
+
+/* ─── Cursor ─── */
+* {
+  cursor: default;
+}
+
+a, button {
+  cursor: pointer;
+}
+
+/* ─── Smooth section transition ─── */
+section {
+  transition: opacity 0.3s ease;
+}
+
+/* ═══════════════════════════════════════════
+   PAGE SLIDE  —  cinematic vertical reveal
+   Each section slides straight up like a
+   new page appearing from below the fold.
+═══════════════════════════════════════════ */
+
+/* Hidden state: pushed down + slightly scaled + faded */
+.page-slide-section {
+  opacity: 0;
+  transform: translateY(60px) scale(0.98);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Revealed state: natural position */
+.page-slide-section.page-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stagger child elements inside each revealed section */
+.page-slide-section.page-revealed > * {
+  animation: child-stagger 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes child-stagger {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
